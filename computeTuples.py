@@ -3,6 +3,7 @@ import csv
 import pandas as pd
 import time
 import os
+import psutil
 
 HOME = os.path.expanduser('~')
 time_interval = 1
@@ -14,8 +15,8 @@ time_interval = 1
 # packets_i = number of packets of flow ith in T period
 # mean_packets: mean of total packets of all flows in T period
 packets_csv = np.genfromtxt('data/packets.csv', delimiter=",")
-dt_packets = packets_csv[:,0]
-sdfp = np.std(dt_packets) 
+dt_packets = packets_csv[:, 0]
+sdfp = np.std(dt_packets)
 
 # Standard deviation of bytes (SDFB)
 # i.e., number of bytes in the T period
@@ -23,7 +24,7 @@ sdfp = np.std(dt_packets)
 # bytes_i: number of total bytes of flow ith in T period
 # mean_bytes: mean of total bytes of all flows in T period
 bytes_csv = np.genfromtxt('data/bytes.csv', delimiter=",")
-dt_bytes = bytes_csv[:,0]
+dt_bytes = bytes_csv[:, 0]
 sdfb = np.std(dt_bytes)
 
 # Number of source IPs
@@ -34,7 +35,8 @@ with open('data/ipsrc.csv', newline='') as f:
     ipsrc_csv = list(reader)
 n_ip = len(np.unique(ipsrc_csv))      # Get number of different source IPs
 # print(n_ip)
-ssip = n_ip // time_interval               # Get number of IPs for every second by multiple interval - 4s
+# Get number of IPs for every second by multiple interval - 4s
+ssip = n_ip // time_interval
 f.close()
 
 
@@ -57,14 +59,18 @@ with open('data/ipsrc.csv', 'r') as t1, open('data/ipdst.csv', 'r') as t2:
     filetwo = t2.readlines()
 
 # Check if the src_ip exists in the dst_ip,
-# which indicates that source IP has two-way interaction with the destination IP. 
+# which indicates that source IP has two-way interaction with the destination IP.
 # If not, append that one-way interaction IP into interactive flow file (intflow.csv)
-with open('data/intflow.csv','w') as f:
+with open('data/intflow.csv', 'w') as f:
     for line in fileone:
         if line not in filetwo:
             f.write(line)
 
-# Count number of 
+# The cpu_percent increases dramatically when DDOS attack happens
+# Get CPU utilization
+cpu_percent = psutil.cpu_percent(interval=0.1)
+
+# Count number of
 with open('data/intflow.csv') as f:
     reader = csv.reader(f, delimiter=",")
     dt = list(reader)
@@ -72,21 +78,21 @@ with open('data/intflow.csv') as f:
 
 
 rfip = abs(float(n_ip - row_count_nonint) / n_ip)
-headers = ["SSIP", "SDFP", "SDFB", "SFE", "RFIP"]
+headers = ["SSIP", "SDFP", "SDFB", "SFE", "RFIP", "CPU"]
 
-features = [ssip, sdfp, sdfb, sfe, rfip]
+features = [ssip, sdfp, sdfb, sfe, rfip, cpu_percent]
 
 
 with open('features-file.csv', 'a') as f:
     cursor = csv.writer(f, delimiter=",")
-    #cursor.writerow(headers)
+    # cursor.writerow(headers)
     cursor.writerow(features)
-    
+
 with open('realtime.csv', 'w') as f:
     cursor = csv.writer(f, delimiter=",")
     cursor.writerow(headers)
     cursor.writerow(features)
-    
+
     f.close()
 
 
