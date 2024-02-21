@@ -41,7 +41,7 @@ do
             echo "$ip_dst_reply" > ARP_data/ip_dst_reply.csv
         fi
         python3.8 computeTuples.py
-        #truncate -s 0 ARP_Broadcast/arp_broadcast.csv
+        truncate -s 0 ARP_Broadcast/arp_broadcast.csv
         # python3.11 inspector.py
         # python3.11 inspector.py
         sleep 1
