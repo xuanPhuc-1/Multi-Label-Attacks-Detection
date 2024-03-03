@@ -31,8 +31,7 @@ switches = []
 
 def myNetwork():
     net = Mininet(topo=None,
-                  build=False,
-                  ipBase='10.0.0.0/8')
+                  build=False)
 
     info('*** Adding controller\n')
     c0 = net.addController(name='c0',
@@ -42,53 +41,57 @@ def myNetwork():
                            port=6633)
 
     info('*** Add switches\n')
-    for i in range(1, 10):
-        switches.append(net.addSwitch(f's{i}', cls=OVSKernelSwitch))
-
-    for switch in switches:
-        info(f"Adding {switch} to network\n")
+    s1 = net.addSwitch('s1', cls=OVSKernelSwitch)
 
     info('*** Add hosts\n')
     for i in range(1, 65):
-        host_ips.append(f'10.0.0.{i}')
 
-        # Thêm các host vào mạng bằng list comprehension
-        hosts.append(net.addHost(f'h{i}', cls=Host,
-                     ip=f'10.0.0.{i}', defaultRoute=None))
         # for host in hosts:
         #     info(f"Adding {host} to network\n")
         if (i >= 1 and i <= 8):
-            hostToSwitch(net, switches[1], hosts[i - 1])
+            host_ips.append(f'10.10.0.{i}')
+            hosts.append(net.addHost(f'h{i}', cls=Host,
+                                     ip=f'10.10.0.{i}/24'))
+            # h{i} run cmd "route add default gw 10.9.0.254"
+            net.get(f'h{i}').cmd('route add default gw 10.10.0.254')
+            hostToSwitch(net, s1, hosts[i-1])
         elif (i >= 9 and i <= 16):
-            hostToSwitch(net, switches[2], hosts[i - 1])
+            host_ips.append(f'10.20.0.{i}')
+            hosts.append(net.addHost(f'h{i}', cls=Host,
+                                     ip=f'10.20.0.{i}/24'))
+            net.get(f'h{i}').cmd('route add default gw 10.20.0.254')
+            hostToSwitch(net, s1, hosts[i-1])
         elif (i >= 17 and i <= 24):
-            hostToSwitch(net, switches[3], hosts[i - 1])
+            host_ips.append(f'10.30.0.{i}')
+            hosts.append(net.addHost(f'h{i}', cls=Host,
+                                     ip=f'10.30.0.{i}/24'))
+            hostToSwitch(net, s1, hosts[i-1])
         elif (i >= 25 and i <= 33):
-            hostToSwitch(net, switches[4], hosts[i - 1])
+            host_ips.append(f'10.40.0.{i}')
+            hosts.append(net.addHost(f'h{i}', cls=Host,
+                                     ip=f'10.40.0.{i}/24'))
+            hostToSwitch(net, s1, hosts[i-1])
         elif (i >= 33 and i <= 40):
-            hostToSwitch(net, switches[5], hosts[i - 1])
+            host_ips.append(f'10.50.0.{i}')
+            hosts.append(net.addHost(f'h{i}', cls=Host,
+                                     ip=f'10.50.0.{i}/24'))
+            net.get(f'h{i}').cmd('route add default gw 10.40.0.254')
+            hostToSwitch(net, s1, hosts[i-1])
         elif (i >= 41 and i <= 48):
-            hostToSwitch(net, switches[6], hosts[i - 1])
-        elif (i >= 49 and i <= 56):
-            hostToSwitch(net, switches[7], hosts[i - 1])
-        elif (i >= 57 and i <= 64):
-            hostToSwitch(net, switches[8], hosts[i - 1])
+            host_ips.append(f'10.60.0.{i}')
+            hosts.append(net.addHost(f'h{i}', cls=Host,
+                                     ip=f'10.60.0.{i}/24'))
+            net.get(f'h{i}').cmd('route add default gw 10.50.0.254')
+            hostToSwitch(net, s1, hosts[i-1])
 
     info('*** Add links\n')
     # connect switch 1 to other switches in switch array
-    for i in range(1, 9):
-        switchToSwitch(net, switches[0], switches[i])
 
     info('*** Starting network\n')
     net.build()
     info('*** Starting controllers\n')
-    for controller in net.controllers:
-        controller.start()
 
-    info('*** Starting switches\n')
-    for switch in switches:
-        net.get(str(switch)).start([c0])
-
+    net.get('s1').start([c0])
     info('*** Post configure switches and hosts\n')
     # for host, command in host_commands.items():
     #     p = Process(target=net.get(host).cmd, args=(command,))
