@@ -8,7 +8,7 @@ import socket
 def send_ping(host):
     while True:
         # Simulate random ping intervals
-        time.sleep(random.randint(1, 60))
+        time.sleep(random.randint(1, 30))
 
         # Create a socket object
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -38,13 +38,15 @@ def main():
     parser.add_argument("-s", "--start", type=int,
                         default=1, help="Starting host index")
     parser.add_argument("-e", "--end", type=int,
-                        default=16, help="Ending host index")
+                        default=48, help="Ending host index")
     args = parser.parse_args()
 
     # Get the list of hosts based on the specified range
     hosts = []
     for i in range(args.start, args.end + 1):
-        hosts.append(f"10.0.0.{i}")
+        # j is random integer from 10 to 60 withh step 10 and not equal to 30 and 40
+        j = random.choice([10, 20, 50, 60])
+        hosts.append(f"10.{j}.0.{i}")
 
     while True:
         # Create and start threads for each host
