@@ -88,7 +88,7 @@ with open('ARP_data/ARP_Request_flowentries.csv', newline='') as f1:
     ARP_Request = list(reader)
 # #check if the path /home/xuanphuc/MITM-Detection/ARP_Broadcast/arp_broadcast.csv exists do the following or not the a
 
-path = HOME + '/Multi-Lable-Attacks-Detection/ARP_Broadcast/arp_broadcast.csv'
+path = HOME + '/Multi-Label-Attacks-Detection/ARP_Broadcast/arp_broadcast.csv'
 with open(path, newline='') as f2:
     reader = csv.reader(f2)
     # format of arp_broadcast.csv: source Mac, time stamp
@@ -124,8 +124,8 @@ else:
 time_stamp = time.strftime("%H:%M:%S", time.localtime())
 # APS: ARP per second, ABPS: ARP broadcast per second, SUBARP: ARP reply - ARP request, MISS_MAC: miss match
 
-ddos = 0
-slow_rate = 0
+ddos = 1
+slow_rate = 1
 mitm = 0
 tag_ddos = ''
 tag_slow_rate = ''
