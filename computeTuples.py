@@ -4,7 +4,7 @@ import pandas as pd
 import time
 import os
 import psutil
-
+from EntropyDetection import Entropy
 HOME = '/home/xp'
 time_interval = 1
 
@@ -95,6 +95,10 @@ with open(path, newline='') as f2:
     arp_broadcast = list(reader)
 
 
+entropy = Entropy()
+entropy.start()
+
+
 arp_broadcast = len(arp_broadcast)
 abps = arp_broadcast / time_interval
 
@@ -124,8 +128,8 @@ else:
 time_stamp = time.strftime("%H:%M:%S", time.localtime())
 # APS: ARP per second, ABPS: ARP broadcast per second, SUBARP: ARP reply - ARP request, MISS_MAC: miss match
 
-ddos = 1
-slow_rate = 1
+ddos = 0
+slow_rate = 0
 mitm = 0
 tag_ddos = ''
 tag_slow_rate = ''
@@ -148,7 +152,7 @@ headers = ["SSIP", "SDFP", "SDFB", "SFE", "RFIP",
 # headers = ["SSIP", "SDFP", "SDFB", "SFE", "RFIP",
 #            "CPU", "APS", "ABPS", "SUBARP", "MISS_MAC", "TIME"]
 
-features = [ssip, sdfp, sdfb, sfe, rfip, cpu_percent,
+features = [ssip, sdfp, sdfb, sfe, rfip, cpu_percent, entropy.value,
             aps, abps, subARP, miss_match, ddos, slow_rate, mitm, tag]
 # features = [ssip, sdfp, sdfb, sfe, rfip, cpu_percent,
 #             aps, abps, subARP, miss_match, time_stamp]
