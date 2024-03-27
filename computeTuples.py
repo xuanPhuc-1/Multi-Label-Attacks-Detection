@@ -109,7 +109,7 @@ f2.close()
 aps = ARP / time_interval
 subARP = ARP_Reply - ARP_Request
 
-with open('f1.csv', 'r') as csvfile:
+with open('mismatch.csv', 'r') as csvfile:
     reader = csv.reader(csvfile, delimiter=',')
     reader = list(reader)
 
@@ -124,9 +124,9 @@ else:
 time_stamp = time.strftime("%H:%M:%S", time.localtime())
 # APS: ARP per second, ABPS: ARP broadcast per second, SUBARP: ARP reply - ARP request, MISS_MAC: miss match
 
-ddos = 0
-slow_rate = 0
-mitm = 0
+ddos = 1
+slow_rate = 1
+mitm = 1
 tag_ddos = ''
 tag_slow_rate = ''
 tag_mitm = ''
@@ -145,8 +145,13 @@ else:
 headers = ["SSIP", "SDFP", "SDFB", "SFE", "RFIP",
            "CPU", "APS", "ABPS", "SUBARP", "MISS_MAC", "DDOS", "SLOW-RATE", "MITM", "TAGS"]
 
+# headers = ["SSIP", "SDFP", "SDFB", "SFE", "RFIP",
+#            "CPU", "APS", "ABPS", "SUBARP", "MISS_MAC", "TIME"]
+
 features = [ssip, sdfp, sdfb, sfe, rfip, cpu_percent,
             aps, abps, subARP, miss_match, ddos, slow_rate, mitm, tag]
+# features = [ssip, sdfp, sdfb, sfe, rfip, cpu_percent,
+#             aps, abps, subARP, miss_match, time_stamp]
 
 file_exists = os.path.isfile('features-file.csv')
 with open('features-file.csv', 'a') as f:

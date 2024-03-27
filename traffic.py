@@ -8,7 +8,7 @@ import socket
 def send_ping(host):
     while True:
         # Simulate random ping intervals
-        time.sleep(random.randint(1, 30))
+        time.sleep(random.randint(1, 60))
 
         # Create a socket object
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
