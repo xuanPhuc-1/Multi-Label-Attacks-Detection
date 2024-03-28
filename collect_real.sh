@@ -16,10 +16,10 @@ do
     # ipsrc=$(awk -F "," '{split($15,c,"="); print c[2]","}' data/flowentries.csv)    #14 cho l3
     # ipdst=$(awk -F "," '{split($16,d,"="); print d[2]","}' data/flowentries.csv)    #15 cho l3
 
-    ipsrc=$(awk -F "," '{split($14,c,"="); print c[2]","}' data/flowentries.csv)    
-    ipdst=$(awk -F "," '{split($15,d,"="); print d[2]","}' data/flowentries.csv)    
-    ethsrc=$(awk -F "," '{split($12,e,"="); print e[2]","}' data/flowentries.csv)   
-    ethdst=$(awk -F "," '{split($13,f,"="); print f[2]","}' data/flowentries.csv)   
+    ipsrc=$(awk -F "," '{split($16,c,"="); print c[2]","}' data/flowentries.csv)    
+    ipdst=$(awk -F "," '{split($17,d,"="); print d[2]","}' data/flowentries.csv)    
+    ethsrc=$(awk -F "," '{split($14,e,"="); print e[2]","}' data/flowentries.csv)   
+    ethdst=$(awk -F "," '{split($15,f,"="); print f[2]","}' data/flowentries.csv)   
 
     eth_src_reply=$(awk -F "," '{split($12,e,"="); print e[2]","}' ARP_data/ARP_Reply_flowentries.csv)   
     ip_dst_reply=$(awk -F "," '{split($15,d,"="); print d[2]","}' ARP_data/ARP_Reply_flowentries.csv)    

@@ -4,7 +4,7 @@ import pandas as pd
 import time
 import os
 import psutil
-
+from EntropyDetection import Entropy
 HOME = '/home/xp'
 time_interval = 1
 
@@ -95,6 +95,10 @@ with open(path, newline='') as f2:
     arp_broadcast = list(reader)
 
 
+entropy = Entropy()
+entropy.start()
+
+
 arp_broadcast = len(arp_broadcast)
 abps = arp_broadcast / time_interval
 
@@ -109,7 +113,7 @@ f2.close()
 aps = ARP / time_interval
 subARP = ARP_Reply - ARP_Request
 
-with open('f1.csv', 'r') as csvfile:
+with open('mismatch.csv', 'r') as csvfile:
     reader = csv.reader(csvfile, delimiter=',')
     reader = list(reader)
 
@@ -145,8 +149,13 @@ else:
 headers = ["SSIP", "SDFP", "SDFB", "SFE", "RFIP",
            "CPU", "APS", "ABPS", "SUBARP", "MISS_MAC", "DDOS", "SLOW-RATE", "MITM", "TAGS"]
 
-features = [ssip, sdfp, sdfb, sfe, rfip, cpu_percent,
+# headers = ["SSIP", "SDFP", "SDFB", "SFE", "RFIP",
+#            "CPU", "APS", "ABPS", "SUBARP", "MISS_MAC", "TIME"]
+
+features = [ssip, sdfp, sdfb, sfe, rfip, cpu_percent, entropy.value,
             aps, abps, subARP, miss_match, ddos, slow_rate, mitm, tag]
+# features = [ssip, sdfp, sdfb, sfe, rfip, cpu_percent,
+#             aps, abps, subARP, miss_match, time_stamp]
 
 file_exists = os.path.isfile('features-file.csv')
 with open('features-file.csv', 'a') as f:
