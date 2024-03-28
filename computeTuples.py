@@ -124,8 +124,8 @@ else:
 time_stamp = time.strftime("%H:%M:%S", time.localtime())
 # APS: ARP per second, ABPS: ARP broadcast per second, SUBARP: ARP reply - ARP request, MISS_MAC: miss match
 
-ddos = 1
-slow_rate = 1
+ddos = 0
+slow_rate = 0
 mitm = 0
 tag_ddos = ''
 tag_slow_rate = ''
