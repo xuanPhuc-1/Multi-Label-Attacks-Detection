@@ -4,8 +4,8 @@ do
     echo "Collecting flow on switch br0 turn $i"
     # extract essential data from raw data
     # sudo ovs-ofctl -O OpenFlow13 dump-flows s"$j" > data/raw.txt
-    #sudo ovs-ofctl -O OpenFlow13 dump-flows br0 > data/raw.txt
-    sudo ovs-ofctl dump-flows tcp:10.9.0.254:6633 > data/raw.txt #uncomment to run in real environment
+    sudo ovs-ofctl -O OpenFlow13 dump-flows br0 > data/raw.txt
+    # sudo ovs-ofctl dump-flows tcp:10.9.0.254:6633 > data/raw.txt #uncomment to run in real environment
     grep "nw_src" data/raw.txt > data/flowentries.csv
     grep "arp_op=1" data/raw.txt > ARP_data/ARP_Request_flowentries.csv
     grep "arp_op=2" data/raw.txt > ARP_data/ARP_Reply_flowentries.csv
