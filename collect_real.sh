@@ -13,9 +13,6 @@ do
 
     packets=$(awk -F "," '{split($4,a,"="); print a[2]","}' data/flowentries.csv)
     bytes=$(awk -F "," '{split($5,b,"="); print b[2]","}' data/flowentries.csv)
-    # ipsrc=$(awk -F "," '{split($15,c,"="); print c[2]","}' data/flowentries.csv)    #14 cho l3
-    # ipdst=$(awk -F "," '{split($16,d,"="); print d[2]","}' data/flowentries.csv)    #15 cho l3
-
     ipsrc=$(awk -F "," '{split($16,c,"="); print c[2]","}' data/flowentries.csv)    
     ipdst=$(awk -F "," '{split($17,d,"="); print d[2]","}' data/flowentries.csv)    
     ethsrc=$(awk -F "," '{split($14,e,"="); print e[2]","}' data/flowentries.csv)   
@@ -42,8 +39,6 @@ do
     python3.8 computeTuples.py
     truncate -s 0 ARP_Broadcast/arp_broadcast.csv
     truncate -s 0 f1.csv
-    # python3.11 inspector.py
-    # python3.11 inspector.py
     sleep 1
 
 done

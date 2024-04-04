@@ -7,6 +7,9 @@ import csv
 
 from FlowEntry import FlowEntry
 
+br = "br0"
+br_real = "tcp:10.9.0.254:6633"
+
 
 def ParseEntries(input_str: str) -> list:
     entries = []
@@ -36,7 +39,7 @@ def main():
         for bridge in bridges:
             try:
                 output = subprocess.check_output(
-                    ['/usr/bin/sudo', 'ovs-ofctl', 'dump-flows', "tcp:10.9.0.254:6633"], stderr=subprocess.STDOUT)
+                    ['/usr/bin/sudo', 'ovs-ofctl', 'dump-flows', br], stderr=subprocess.STDOUT)
                 outputMessage = output.decode('utf-8')
             except subprocess.CalledProcessError as e:
                 errorMessage = e.output.decode('utf-8')
@@ -51,15 +54,23 @@ def main():
                     # check if flowEntry is type FlowEntry
                     if isinstance(flowEntry, FlowEntry):
                         if (flowEntry.arp):
-                            # print(flowEntry)
-                            if flowEntry.dl_src not in MacToIpDict:
-                                MacToIpDict[flowEntry.dl_src] = flowEntry.arp_spa
-                                print(
-                                    f"Added {flowEntry.dl_src}-> {flowEntry.arp_spa} to MacToIpDict")
-                            if flowEntry.arp_op == 2 and flowEntry.dl_src in MacToIpDict and MacToIpDict[flowEntry.dl_src] != flowEntry.arp_spa:
-                                print(
-                                    f"{Fore.RED}WARNING!{Fore.RESET} {bridge}: {flowEntry.dl_src} is trying to impersonate {flowEntry.arp_spa}!")
-                                suspiciousPackets += flowEntry.n_packets
+                            # check if the last octet of ip is not 254
+                            if flowEntry.arp_spa.split('.')[3] != '254':
+                                # print(flowEntry)
+                                if flowEntry.dl_src not in MacToIpDict:
+                                    MacToIpDict[flowEntry.dl_src] = flowEntry.arp_spa
+                                    print(
+                                        f"Added {flowEntry.dl_src}-> {flowEntry.arp_spa} to MacToIpDict")
+                                if flowEntry.arp_op == 2 and flowEntry.dl_src in MacToIpDict and MacToIpDict[flowEntry.dl_src] != flowEntry.arp_spa:
+                                    print(
+                                        f"{Fore.RED}WARNING!{Fore.RESET} {bridge}: {flowEntry.dl_src} is trying to impersonate {flowEntry.arp_spa}!")
+                                    # write to to csv file
+                                    with open('MitM_Ban_List.csv', 'w') as f:
+                                        # write binary_prediction to result.csv
+                                        writer = csv.writer(f)
+                                        writer.writerow([flowEntry.dl_src])
+                                        f.close()
+                                    suspiciousPackets += flowEntry.n_packets
                 except ValueError as e:
                     print(str(e))
                 except:
