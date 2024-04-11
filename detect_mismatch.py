@@ -7,8 +7,8 @@ import csv
 
 from FlowEntry import FlowEntry
 
-br = "br0"
-br_real = "tcp:10.9.0.254:6633"
+# br = "br0"
+br = "tcp:10.9.0.254:6633"
 
 
 def ParseEntries(input_str: str) -> list:

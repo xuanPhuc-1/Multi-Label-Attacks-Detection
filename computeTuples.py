@@ -147,13 +147,13 @@ else:
     tag = tag_ddos + tag_slow_rate + tag_mitm
 
 headers = ["SSIP", "SDFP", "SDFB", "SFE", "RFIP",
-           "CPU", "APS", "ABPS", "SUBARP", "MISS_MAC", "DDOS", "SLOW-RATE", "MITM", "TAGS"]
+           "CPU", "APS", "ABPS", "SUBARP", "MISS_MAC"]
 
 # headers = ["SSIP", "SDFP", "SDFB", "SFE", "RFIP",
 #            "CPU", "APS", "ABPS", "SUBARP", "MISS_MAC", "TIME"]
 
-features = [ssip, sdfp, sdfb, sfe, rfip, cpu_percent, entropy.value,
-            aps, abps, subARP, miss_match, ddos, slow_rate, mitm, tag]
+features = [ssip, sdfp, sdfb, sfe, rfip, cpu_percent,
+            aps, abps, subARP, miss_match]
 # features = [ssip, sdfp, sdfb, sfe, rfip, cpu_percent,
 #             aps, abps, subARP, miss_match, time_stamp]
 

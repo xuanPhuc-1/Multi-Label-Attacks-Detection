@@ -1,7 +1,7 @@
 #!/bin/bash
 for i in {1..10000}
 do
-    echo "Collecting flow on switch br0 turn $i"
+    # echo "Collecting flow on switch br0 turn $i"
     # extract essential data from raw data
     # sudo ovs-ofctl -O OpenFlow13 dump-flows s"$j" > data/raw.txt
     #sudo ovs-ofctl -O OpenFlow13 dump-flows br0 > data/raw.txt
@@ -39,6 +39,7 @@ do
     python3.8 computeTuples.py
     truncate -s 0 ARP_Broadcast/arp_broadcast.csv
     truncate -s 0 f1.csv
+    python3.8 inspector_demo.py
     sleep 1
 
 done

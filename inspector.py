@@ -8,7 +8,7 @@ from sklearn.model_selection import train_test_split
 import time
 
 # Đọc dữ liệu từ file CSV, bỏ cột cuối cùng 'TAGS'
-df = pd.read_csv('filtered6_dataset.csv').iloc[:, :-1]
+df = pd.read_csv('real_dataset.csv').iloc[:, :-1]
 
 # Tách ma trận đặc trưng (X) và nhãn (y)
 # Bỏ ba cột nhãn để có ma trận đặc trưng X
@@ -29,13 +29,14 @@ X_train_scaled = pipeline.fit_transform(X_train)
 X_test_scaled = pipeline.transform(X_test)
 
 
-filename = 'NN'
+filename = 'real_NN'
 
 
 with open(filename, 'rb') as file:
     classifier = pickle.load(file)
 
 sample = pd.read_csv('realtime.csv')
+
 # print start time type h:m:s
 start_time = time.time()
 specific_case_scaled = pipeline.transform(sample)
