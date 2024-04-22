@@ -45,7 +45,11 @@ f.close()
 # Number of Flow entries
 # Speed of Flow entries (SFE), number of flow entries to the switch per unit of time
 # SFE = Number of flow entries / T period
-sfe = n_ip // time_interval
+with open('data/flowentries.csv', newline='') as f:
+    reader = csv.reader(f)
+    flows = list(reader)
+n_flows = len(flows)
+sfe = n_flows // time_interval
 
 # Number of interactive flow entries
 # Ratio of Pair-Flow Entries (RFIP)

@@ -69,8 +69,11 @@ def main():
                             os.system(
                                 f'sudo ovs-ofctl add-flow {br} "table={flowEntry.table}, priority={flowEntry.priority}, in_port={flowEntry.in_port}, dl_src={flowEntry.dl_src}, dl_dst={flowEntry.dl_dst}, nw_src={flowEntry.nw_src}, nw_dst={flowEntry.nw_dst}, icmp, icmp_type={flowEntry.icmp_type}, icmp_code={flowEntry.icmp_code}, actions=drop"'
                             )
-                            # in ra toàn bộ các flow có dl_src là banned_address
-                            print("Banned flow icmp: ", flowEntry)
+                            with open("result.txt", "r") as file:
+                                if "Normal" not in file.read():
+                                    print("Banned flow icmp: ", flowEntry)
+                                else:
+                                    print("Normal")
                 except ValueError as e:
                     print(str(e))
                 except:

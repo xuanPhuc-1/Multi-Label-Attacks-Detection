@@ -17,6 +17,7 @@ do
     ipdst=$(awk -F "," '{split($15,d,"="); print d[2]","}' data/flowentries.csv)    
     ethsrc=$(awk -F "," '{split($12,e,"="); print e[2]","}' data/flowentries.csv)   
     ethdst=$(awk -F "," '{split($13,f,"="); print f[2]","}' data/flowentries.csv)   
+    inport=$(awk -F "," '{split($10,g,"="); print g[2]","}' data/flowentries.csv)
 
     eth_src_reply=$(awk -F "," '{split($12,e,"="); print e[2]","}' ARP_data/ARP_Reply_flowentries.csv)   
     ip_dst_reply=$(awk -F "," '{split($15,d,"="); print d[2]","}' ARP_data/ARP_Reply_flowentries.csv)    
@@ -35,11 +36,12 @@ do
         echo "$ethdst" > data/ethdst.csv
         echo "$eth_src_reply" > ARP_data/eth_src_reply.csv
         echo "$ip_dst_reply" > ARP_data/ip_dst_reply.csv
+        echo "$inport" > data/inport.csv
     fi
     python3.8 computeTuples.py
     truncate -s 0 ARP_Broadcast/arp_broadcast.csv
     truncate -s 0 f1.csv
-    # python3.11 inspector.py
+    python3.8 inspector_demo.py
     # python3.11 inspector.py
     sleep 1
 
