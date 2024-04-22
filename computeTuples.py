@@ -4,7 +4,6 @@ import pandas as pd
 import time
 import os
 import psutil
-from EntropyDetection import Entropy
 HOME = '/home/xp'
 time_interval = 1
 
@@ -93,10 +92,6 @@ with open(path, newline='') as f2:
     reader = csv.reader(f2)
     # format of arp_broadcast.csv: source Mac, time stamp
     arp_broadcast = list(reader)
-
-
-entropy = Entropy()
-entropy.start()
 
 
 arp_broadcast = len(arp_broadcast)
