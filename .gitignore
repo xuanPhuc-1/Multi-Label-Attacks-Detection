@@ -15,3 +15,7 @@ ARP_Broadcast/arp_broadcast.csv
 ARP_Broadcast/arp_broadcast.csv
 ARP_data/ARP_Reply_flowentries.csv
 data/packets.csv
+data/*
+ARP_Broadcast/*
+ARP_data/*
+__pycache__/*

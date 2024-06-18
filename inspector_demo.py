@@ -17,7 +17,7 @@ tag_mitm = ''
 
 if sample['SSIP'].values > 600:
     tag_ddos = 'DDOS '
-if sample['SSIP'].values > 100 and sample['SFE'].values < 300:
+if sample['SSIP'].values > 100 and sample['SFE'].values < 300 and sample['SDFP'].values == 0.0:
     tag_slow_rate = 'Slow Rate '
 if sample['MISS_MAC'].values == 1:
     tag_mitm = 'MITM '
